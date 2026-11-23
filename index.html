@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>História do UNIX · Fundamentos de Sistemas Operacionais</title>
+  <link rel="stylesheet" href="slides.css">
+  <script src="slides.js" defer></script>
+</head>
+<body>
+  <div class="frame">
+    <div class="presentation-viewport">
+    <main class="stage" tabindex="-1" aria-label="História do UNIX">
+      <section class="slide cover active" data-chapter="Criação" data-speaker="Miguel" data-time="0:00" aria-labelledby="s1">
+        <img class="cover-image" src="assets/bell.webp" alt="Ken Thompson sentado e Dennis Ritchie em pé, diante de um PDP-11">
+        <div class="cover-shade"></div>
+        <div class="cover-copy">
+          <p class="kicker">PUC-Campinas / Fundamentos de Sistemas Operacionais</p>
+          <h1 id="s1">História do<br> <em>UNIX</em></h1>
+          <p class="subtitle">Criação e desenvolvimento</p>
+          <ul class="names">
+            <li><span>Miguel Fernandes Costacurta</span><code>25003110</code></li>
+            <li><span>Pedro Henrique Contardi Soler</span><code>25005592</code></li>
+            <li><span>Vinicius Panutti Salgado</span><code>25007329</code></li>
+          </ul>
+        </div>
+        <p class="photo-credit">Bell Labs, c. 1972 <span>·</span> Arquivo Dennis Ritchie</p>
+      </section>
+
+      <section class="slide agenda paper" data-chapter="Índice" data-speaker="Miguel" data-time="0:30" aria-labelledby="s2">
+        <div class="copy">
+          <h2 id="s2">Índice</h2>
+        </div>
+        <div class="agenda-grid">
+          <div class="agenda-group">
+            <h3>Abertura e criação</h3>
+            <ol class="agenda-list" start="1">
+              <li><a href="#1"><span class="agenda-number">01</span><span><strong>História do UNIX</strong><span class="agenda-detail">Tema, integrantes e RAs.</span></span></a></li>
+              <li><a href="#2" aria-current="page"><span class="agenda-number">02</span><span><strong>Índice</strong><span class="agenda-detail">Guia dos slides do seminário.</span></span></a></li>
+              <li><a href="#3"><span class="agenda-number">03</span><span><strong>Depois do Multics</strong><span class="agenda-detail">Tempo compartilhado e o início no PDP-7.</span></span></a></li>
+              <li><a href="#4"><span class="agenda-number">04</span><span><strong>O UNIX chega ao PDP-11</strong><span class="agenda-detail">Uso em patentes e o manual de 1971.</span></span></a></li>
+              <li><a href="#5"><span class="agenda-number">05</span><span><strong>A fronteira do kernel</strong><span class="agenda-detail">Shell, modo privilegiado e chamadas de sistema.</span></span></a></li>
+            </ol>
+          </div>
+          <div class="agenda-group">
+            <h3>Arquivos e processos</h3>
+            <ol class="agenda-list" start="6">
+              <li><a href="#6"><span class="agenda-number">06</span><span><strong>“Tudo é um arquivo”</strong><span class="agenda-detail">E/S em arquivos, terminais e pipes.</span></span></a></li>
+              <li><a href="#7"><span class="agenda-number">07</span><span><strong>Do nome ao descritor</strong><span class="agenda-detail">Diretório, inode e estado da abertura.</span></span></a></li>
+              <li><a href="#8"><span class="agenda-number">08</span><span><strong>A saída de um vira entrada</strong><span class="agenda-detail">Demonstração de grep e wc no terminal.</span></span></a></li>
+              <li><a href="#9"><span class="agenda-number">09</span><span><strong>O pipe por dentro</strong><span class="agenda-detail">Criação dos processos, redirecionamento e fim de arquivo.</span></span></a></li>
+            </ol>
+          </div>
+          <div class="agenda-group">
+            <h3>Portabilidade e legado</h3>
+            <ol class="agenda-list" start="10">
+              <li><a href="#10"><span class="agenda-number">10</span><span><strong>O kernel passou para C</strong><span class="agenda-detail">A reescrita de 1973 e o uso de estruturas.</span></span></a></li>
+              <li><a href="#11"><span class="agenda-number">11</span><span><strong>A prova da portabilidade</strong><span class="agenda-detail">O que mudou no porte para o Interdata.</span></span></a></li>
+              <li><a href="#12"><span class="agenda-number">12</span><span><strong>Várias versões, interfaces em comum</strong><span class="agenda-detail">BSD, System V e o padrão POSIX.</span></span></a></li>
+              <li><a href="#13"><span class="agenda-number">13</span><span><strong>O que o UNIX deixou</strong><span class="agenda-detail">Composição de programas e interfaces reutilizáveis.</span></span></a></li>
+              <li><a href="#14"><span class="agenda-number">14</span><span><strong>Fontes consultadas</strong><span class="agenda-detail">Artigos, acervos e materiais da disciplina.</span></span></a></li>
+              <li><a href="#15"><span class="agenda-number">15</span><span><strong>Obrigado.</strong><span class="agenda-detail">Agradecimento do grupo.</span></span></a></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide wide origins paper" data-chapter="Criação" data-speaker="Miguel" data-time="0:40" aria-labelledby="s3">
+        <div class="copy">
+          <p class="kicker">Bell Labs / 1969</p>
+          <h2 id="s3">Depois do <em>Multics</em></h2>
+          <p>Quando o Bell Labs saiu do projeto Multics, seus pesquisadores ainda queriam trabalhar de forma interativa, em uma máquina compartilhada.</p>
+        </div>
+        <div class="sequence">
+          <div class="line-item"><span>01 / CONTEXTO</span><strong>Multics</strong><p>Sessões interativas dividem a CPU e outros recursos.</p></div>
+          <div class="line-item"><span>02 / EXPERIMENTO</span><strong>DEC PDP-7</strong><p>Thompson e Ritchie usam o PDP-7 para levar <i>Space Travel</i> a um terminal gráfico.</p></div>
+          <div class="line-item"><span>03 / SISTEMA</span><strong>Primeiro UNIX</strong><p>O sistema de arquivos de Thompson, Ritchie e Canaday vira a base de um SO escrito em assembly.</p></div>
+        </div>
+        <small class="source">Ritchie, <i>The Evolution of the Unix Time-sharing System</i> (1979)</small>
+      </section>
+
+      <section class="slide two archive paper" data-chapter="Criação" data-speaker="Miguel" data-time="1:50" aria-labelledby="s4">
+        <div class="copy">
+          <p class="kicker">Bell Labs / 1970–1971</p>
+          <h2 id="s4">O UNIX chega<br> <em>ao PDP-11</em></h2>
+          <p>O departamento de patentes do Bell Labs usou UNIX para editar e formatar seus documentos.</p>
+          <div class="annotation"><code>24 KB</code><span>Memória do PDP-11/20 descrito no primeiro manual. A edição de novembro de 1971 já documentava chamadas de sistema e arquivos especiais.</span></div>
+        </div>
+        <figure class="document">
+          <img src="assets/manual.webp" alt="Página de rosto do UNIX Programmer’s Manual, de Thompson e Ritchie, datada de 3 de novembro de 1971">
+          <figcaption>UNIX Programmer’s Manual / 1ª edição</figcaption>
+        </figure>
+        <small class="source">Bell Labs, <i>Porting UNIX for its first commercial application</i> · Manual de 1971</small>
+      </section>
+
+      <section class="slide two" data-chapter="Criação" data-speaker="Miguel" data-time="3:15" aria-labelledby="s5">
+        <div class="copy">
+          <p class="kicker">Arquitetura / UNIX clássico</p>
+          <h2 id="s5">A fronteira<br> <em>do kernel</em></h2>
+          <p>O shell interpreta comandos em espaço de usuário. Uma chamada de sistema faz a CPU entrar em modo privilegiado para que o kernel trate a solicitação.</p>
+        </div>
+        <div class="stack" aria-label="Shell e utilitários usam chamadas de sistema para acessar o kernel, que opera sobre o hardware">
+          <div><small>ESPAÇO DE USUÁRIO</small><strong>Shell e utilitários</strong></div>
+          <div class="boundary"><code>open()</code><code>read()</code><code>fork()</code></div>
+          <div class="kernel"><small>MODO PRIVILEGIADO</small><strong>Kernel monolítico</strong><p>Verifica permissões, resolve descritores, aciona drivers e gerencia processos.</p></div>
+          <div><small>HARDWARE</small><strong>CPU, memória e dispositivos</strong></div>
+        </div>
+        <small class="source">Reis, aula 01, slides 19–20 e 27–34 · Ritchie e Thompson (1974)</small>
+      </section>
+
+      <section class="slide two green" data-chapter="Abstrações" data-speaker="Pedro" data-time="4:35" aria-labelledby="s6">
+        <div class="copy">
+          <p class="kicker">Sistema de arquivos</p>
+          <h2 id="s6">“Tudo é<br> <em>um arquivo”</em></h2>
+          <p>Arquivos comuns e vários dispositivos podem ser abertos por nome e usados por meio de operações de E/S semelhantes.</p>
+        </div>
+        <div class="io-map">
+          <div class="io-call"><code>fd = open(caminho, flags)</code><span>Para caminhos, o kernel devolve um descritor. Para um pipe, devolve dois.</span></div>
+          <div class="io-rows">
+            <div><code>eventos.txt</code><span>Arquivo regular · permite mudar a posição de leitura</span></div>
+            <div><code>/dev/tty</code><span>Terminal controlador · acesso por arquivos de dispositivo</span></div>
+            <div><code>pipe()</code><span>Canal anônimo · usa descritores sem caminho de arquivo</span></div>
+          </div>
+          <div class="annotation"><code>read(fd, …)</code><span>Mesma operação. O kernel trata cada objeto de acordo com seu tipo.</span></div>
+        </div>
+        <small class="source">Ritchie e Thompson (1974), §§3–4 · Reis, aula 07, slides 11–12 e 20–28</small>
+      </section>
+
+      <section class="slide two green descriptors paper" data-chapter="Abstrações" data-speaker="Pedro" data-time="5:45" aria-labelledby="s7">
+        <div class="copy">
+          <p class="kicker">Sistema de arquivos / identificação</p>
+          <h2 id="s7">Do nome ao<br> <em>descritor</em></h2>
+          <p>Um diretório associa nomes a números de inode. Ao abrir um arquivo, o processo recebe um número para referenciar aquela abertura.</p>
+        </div>
+        <div class="file-route">
+          <div class="route"><small>RESOLUÇÃO DO CAMINHO</small><div><code>eventos.txt</code><span aria-hidden="true">→</span><strong>inode</strong></div><p>O diretório associa o nome ao inode, que guarda tipo, dono e permissões.</p></div>
+          <div class="route"><small>LEITURA DEPOIS DE OPEN()</small><div><code>fd 3</code><span aria-hidden="true">→</span><strong>abertura</strong><span aria-hidden="true">→</span><strong>inode</strong></div><p>O descritor indexa a tabela do processo. A abertura mantém a posição de leitura.</p></div>
+          <p class="route-note">Depois de <code>fork()</code>, os descritores herdados apontam para as mesmas aberturas.</p>
+        </div>
+        <small class="source">Ritchie e Thompson (1974), §§3–4 · Reis, aula 07, slides 21–28</small>
+      </section>
+
+      <section class="slide two green" data-chapter="Abstrações" data-speaker="Pedro" data-time="7:00" aria-labelledby="s8">
+        <div class="copy">
+          <p class="kicker">Demonstração / comandos POSIX</p>
+          <h2 id="s8">A saída de um<br> <em>vira entrada</em></h2>
+          <p>Quantas linhas de um registro contêm <code>ERRO</code>?</p>
+          <p class="aside">McIlroy propôs ligar comandos. O pipe tornou essa ideia parte do UNIX.</p>
+        </div>
+        <div class="terminal-area">
+          <div class="terminal" aria-label="Demonstração ilustrativa de terminal">
+            <div class="terminal-title"><span class="lights" aria-hidden="true">● ● ●</span><span>terminal / demonstração</span></div>
+            <div class="terminal-body">
+              <div class="demo-line"><span>$</span> cat eventos.txt</div>
+              <pre class="demo-line">OK inicialização
+ERRO disco
+OK login
+ERRO leitura</pre>
+              <div class="demo-line"><span>$</span> grep ERRO eventos.txt <b>|</b> wc -l</div>
+              <div class="demo-line output" aria-live="polite"><span id="demo-result">2</span></div>
+            </div>
+          </div>
+          <div class="demo-controls">
+            <button type="button" id="reveal" aria-keyshortcuts="M">Mostrar resultado</button>
+            <button type="button" id="replay">Repetir demonstração</button>
+          </div>
+        </div>
+        <small class="source">Ritchie (1979), seção sobre pipes · Exemplo didático com dados fictícios</small>
+      </section>
+
+      <section class="slide green wide pipe-slide" data-chapter="Abstrações" data-speaker="Pedro" data-time="8:00" aria-labelledby="s9">
+        <div class="copy">
+          <p class="kicker">Processos / o que o shell prepara</p>
+          <h2 id="s9">O pipe por <em>dentro</em></h2>
+        </div>
+        <div class="pipe-flow" data-step="0" aria-label="grep escreve no descritor 1 conectado ao buffer do pipe no kernel. wc lê pelo descritor 0.">
+          <div><small>PROCESSO PRODUTOR</small><strong><code>grep</code></strong><span><code>write()</code> pela saída padrão / fd 1</span></div>
+          <div class="channel"><small>KERNEL</small><strong>Pipe</strong><span>buffer de bytes</span></div>
+          <div><small>PROCESSO CONSUMIDOR</small><strong><code>wc</code></strong><span><code>read()</code> pela entrada padrão / fd 0</span></div>
+          <i class="flow-signal" aria-hidden="true"></i>
+        </div>
+        <div class="pipe-interaction">
+          <ol class="pipe-steps" aria-label="Etapas do pipeline">
+            <li><button type="button" aria-pressed="true" data-detail="O shell pede ao kernel um canal de bytes. Recebe um descritor de leitura e um de escrita."><code>01 / pipe()</code><span>Criar o canal</span></button></li>
+            <li><button type="button" aria-pressed="false" data-detail="Os processos filhos herdam os descritores do shell e ganham acesso a ambas as pontas do mesmo canal."><code>02 / fork()</code><span>Criar os filhos</span></button></li>
+            <li><button type="button" aria-pressed="false" data-detail="dup2 liga a saída de grep à escrita e a entrada de wc à leitura. O shell e os filhos fecham as pontas que não usam."><code>03 / dup2() e close()</code><span>Redirecionar E/S</span></button></li>
+            <li><button type="button" aria-pressed="false" data-detail="exec carrega grep e wc. O shell aguarda os filhos. Quando o buffer esvazia e a última ponta de escrita fecha, wc recebe fim de arquivo."><code>04 / exec() e wait()</code><span>Executar e aguardar</span></button></li>
+          </ol>
+          <p id="pipe-detail" aria-live="polite">O shell pede ao kernel um canal de bytes. Recebe um descritor de leitura e um de escrita.</p>
+        </div>
+        <small class="source">Modelo em POSIX moderno · Ritchie e Thompson (1974), §§5–6 · Reis, aula 02, slides 12–17</small>
+      </section>
+
+      <section class="slide two copper language-slide paper" data-chapter="Portabilidade e legado" data-speaker="Vinicius" data-time="9:20" aria-labelledby="s10">
+        <div class="copy">
+          <p class="kicker">Research UNIX / 1973</p>
+          <h2 id="s10">O kernel<br> <em>passou para C</em></h2>
+          <p>Reescrever o núcleo em C reduziu a dependência da linguagem de máquina e facilitou a manutenção do código.</p>
+        </div>
+        <div class="language">
+          <figure class="lineage">
+            <figcaption>Linhagem</figcaption>
+            <ol class="lineage-steps">
+              <li><code>BCPL</code></li>
+              <li><code>B</code></li>
+              <li><code>C</code></li>
+            </ol>
+            <p>Thompson desenvolveu B. Ritchie acrescentou tipos e evoluiu a linguagem para C.</p>
+          </figure>
+          <div class="annotation"><code>C</code><span>C permitiu agrupar campos de um inode em uma estrutura e acessar cada campo pelo nome. Em B, o código precisava calcular posições explicitamente.</span></div>
+          <div class="annotation"><code>assembly</code><span>Rotinas que dependiam diretamente da CPU continuaram específicas da máquina.</span></div>
+        </div>
+        <small class="source">Ritchie, <i>The Development of the C Language</i> (1993) · Reis, aula 01, slide 31</small>
+      </section>
+
+      <section class="slide two copper" data-chapter="Portabilidade e legado" data-speaker="Vinicius" data-time="10:55" aria-labelledby="s11">
+        <div class="copy">
+          <p class="kicker">PDP-11 / Interdata 8/32 / 1977–1978</p>
+          <h2 id="s11">A prova da<br> <em>portabilidade</em></h2>
+          <p>O Bell Labs levou UNIX a outra arquitetura. O trabalho exigiu um compilador para o alvo e adaptações em drivers e rotinas da máquina.</p>
+        </div>
+        <div class="metric">
+          <strong>95<span>%</span></strong>
+          <p>de cerca de 7.000 linhas da parte do kernel estudada eram idênticas nas duas versões.</p>
+          <div class="bar" role="img" aria-label="95% das linhas dessa parte do kernel permaneceram idênticas"><i></i></div>
+          <small>Essa contagem exclui drivers e rotinas de baixo nível.</small>
+          <div class="annotation"><code>exec()</code><span>O código de montagem dos argumentos mudou porque as pilhas cresciam em sentidos opostos nas duas CPUs.</span></div>
+        </div>
+        <small class="source">Johnson e Ritchie, <i>Portability of C Programs and the UNIX System</i> (1978), §§IV e VIII</small>
+      </section>
+
+      <section class="slide copper wide diffusion paper" data-chapter="Portabilidade e legado" data-speaker="Vinicius" data-time="12:05" aria-labelledby="s12">
+        <div class="copy">
+          <p class="kicker">Difusão / universidades e indústria</p>
+          <h2 id="s12">Várias versões, <em>interfaces em comum</em></h2>
+          <p>O licenciamento levou o código a outros grupos. A diversidade de versões tornou a compatibilidade uma questão prática.</p>
+        </div>
+        <div class="legacy" aria-label="Pesquisa UNIX se difunde e inspira diferentes variantes. POSIX padroniza interfaces.">
+          <div><code>Anos 1970</code><strong>BSD</strong><p>Berkeley amplia UNIX. O 4.2BSD (1983) inclui TCP/IP.</p></div>
+          <div><code>1983</code><strong>System V</strong><p>A AT&amp;T consolida sua linha comercial.</p></div>
+          <div><code>1988</code><strong>POSIX.1</strong><p>O IEEE padroniza interfaces de programação para facilitar o porte de programas.</p></div>
+        </div>
+        <small class="source">Bancroft Library, <i>Berkeley Software Distribution records</i> · The Open Group</small>
+      </section>
+
+      <section class="slide two closing" data-chapter="Portabilidade e legado" data-speaker="Vinicius" data-time="13:10" aria-labelledby="s13">
+        <div class="copy">
+          <p class="kicker">Conclusão</p>
+          <h2 id="s13">O que o UNIX<br> <em>deixou</em></h2>
+          <p>O pipeline reúne duas decisões que atravessaram gerações de sistemas: interfaces de E/S reutilizáveis e programas que o shell pode combinar.</p>
+        </div>
+        <div class="sequence">
+          <div class="line-item"><span>NO TERMINAL</span><strong><code>grep … | wc -l</code></strong><p>Processos independentes trocam bytes pelo kernel.</p></div>
+          <div class="line-item"><span>NA IMPLEMENTAÇÃO</span><strong>C e portabilidade</strong><p>Grande parte do código sobrevive à troca de máquina.</p></div>
+          <div class="line-item"><span>ENTRE SISTEMAS</span><strong>Interfaces padronizadas</strong><p>Programas podem ser adaptados a implementações diferentes.</p></div>
+        </div>
+      </section>
+
+      <section class="slide references paper" data-chapter="Fontes" data-speaker="Vinicius" data-time="14:15" aria-labelledby="s14">
+        <div class="copy"><h2 id="s14">Fontes <em>consultadas</em></h2></div>
+        <div class="reference-grid">
+          <div class="reference-group">
+            <h3>Artigos</h3>
+            <ul class="reference-list">
+              <li>
+                <cite>The Evolution of the Unix Time-sharing System</cite>
+                <p class="reference-byline">Dennis Ritchie, 1979</p>
+                <div class="reference-meta"><time datetime="2026-11-23">Consulta em 23/11/2026</time><a class="reference-url" href="https://cm-bell-labs.github.io/who/dmr/hist.html" target="_blank" rel="noopener">https://cm-bell-labs.github.io/who/dmr/hist.html</a></div>
+              </li>
+              <li>
+                <cite>The UNIX Time-Sharing System</cite>
+                <p class="reference-byline">Dennis Ritchie e Ken Thompson, 1974</p>
+                <div class="reference-meta"><time datetime="2026-11-23">Consulta em 23/11/2026</time><a class="reference-url" href="https://www.cs.cmu.edu/~15712/papers/ritchie74.pdf" target="_blank" rel="noopener">https://www.cs.cmu.edu/~15712/papers/ritchie74.pdf</a></div>
+              </li>
+              <li>
+                <cite>The Development of the C Language</cite>
+                <p class="reference-byline">Dennis Ritchie, 1993</p>
+                <div class="reference-meta"><time datetime="2026-11-23">Consulta em 23/11/2026</time><a class="reference-url" href="https://cm-bell-labs.github.io/who/dmr/chist.html" target="_blank" rel="noopener">https://cm-bell-labs.github.io/who/dmr/chist.html</a></div>
+              </li>
+              <li>
+                <cite>Portability of C Programs and the UNIX System</cite>
+                <p class="reference-byline">Stephen Johnson e Dennis Ritchie, 1978</p>
+                <div class="reference-meta"><time datetime="2026-11-23">Consulta em 23/11/2026</time><a class="reference-url" href="https://cm-bell-labs.github.io/who/dmr/portpap.html" target="_blank" rel="noopener">https://cm-bell-labs.github.io/who/dmr/portpap.html</a></div>
+              </li>
+            </ul>
+          </div>
+          <div class="reference-group">
+            <h3>História e documentação</h3>
+            <ul class="reference-list">
+              <li>
+                <cite>pipe(7) · Visão geral de pipes e FIFOs</cite>
+                <p class="reference-byline">Linux man-pages</p>
+                <div class="reference-meta"><time datetime="2026-11-23">Consulta em 23/11/2026</time><a class="reference-url" href="https://man7.org/linux/man-pages/man7/pipe.7.html" target="_blank" rel="noopener">https://man7.org/linux/man-pages/man7/pipe.7.html</a></div>
+              </li>
+              <li>
+                <cite>History of UNIX</cite>
+                <p class="reference-byline">The Open Group</p>
+                <div class="reference-meta"><time datetime="2026-11-23">Consulta em 23/11/2026</time><a class="reference-url" href="https://www.unix.org/unix_history.html" target="_blank" rel="noopener">https://www.unix.org/unix_history.html</a></div>
+              </li>
+              <li>
+                <cite>The Single UNIX Specification</cite>
+                <p class="reference-byline">The Open Group</p>
+                <div class="reference-meta"><time datetime="2026-11-23">Consulta em 23/11/2026</time><a class="reference-url" href="https://www.unix.org/overview.html" target="_blank" rel="noopener">https://www.unix.org/overview.html</a></div>
+              </li>
+              <li>
+                <cite>Berkeley Software Distribution Records</cite>
+                <p class="reference-byline">Bancroft Library, UC Berkeley</p>
+                <div class="reference-meta"><time datetime="2026-11-23">Consulta em 23/11/2026</time><a class="reference-url" href="https://oac.cdlib.org/findaid/ark:/13030/hb2b69n7b5" target="_blank" rel="noopener">https://oac.cdlib.org/findaid/ark:/13030/hb2b69n7b5</a></div>
+              </li>
+            </ul>
+          </div>
+          <div class="reference-group">
+            <h3>Materiais e acervo</h3>
+            <ul class="reference-list">
+              <li>
+                <cite>Aula 01 · Apresentação e introdução</cite>
+                <p class="reference-byline">Lucas Reis, PUC-Campinas</p>
+                <div class="reference-meta"><time datetime="2026-11-23">Consulta em 23/11/2026</time><a href="fontes-locais/aula-01.pdf" target="_blank" rel="noopener">Aula 01 em PDF <span aria-hidden="true">↗</span></a></div>
+              </li>
+              <li>
+                <cite>Aula 02 · Processos e threads</cite>
+                <p class="reference-byline">Lucas Reis, PUC-Campinas</p>
+                <div class="reference-meta"><time datetime="2026-11-23">Consulta em 23/11/2026</time><a href="fontes-locais/aula-02.pdf" target="_blank" rel="noopener">Aula 02 em PDF <span aria-hidden="true">↗</span></a></div>
+              </li>
+              <li>
+                <cite>Aula 07 · E/S e sistemas de arquivos</cite>
+                <p class="reference-byline">Lucas Reis, PUC-Campinas</p>
+                <div class="reference-meta"><time datetime="2026-11-23">Consulta em 23/11/2026</time><a href="fontes-locais/aula-07.pdf" target="_blank" rel="noopener">Aula 07 em PDF <span aria-hidden="true">↗</span></a></div>
+              </li>
+              <li>
+                <cite>UNIX Programmer’s Manual</cite>
+                <p class="reference-byline">Ken Thompson e Dennis Ritchie, 1971</p>
+                <div class="reference-meta"><time datetime="2026-11-23">Consulta em 23/11/2026</time><a class="reference-url" href="https://cm-bell-labs.github.io/who/dmr/1stEdman.html" target="_blank" rel="noopener">https://cm-bell-labs.github.io/who/dmr/1stEdman.html</a></div>
+              </li>
+              <li>
+                <cite>Thompson e Ritchie no PDP-11</cite>
+                <p class="reference-byline">Fotografia de capa, c. 1972</p>
+                <div class="reference-meta"><time datetime="2026-11-23">Consulta em 23/11/2026</time><a class="reference-url" href="https://cm-bell-labs.github.io/who/dmr/picture.html" target="_blank" rel="noopener">https://cm-bell-labs.github.io/who/dmr/picture.html</a></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <small class="source">Fotografia e manual de acervo. As demais cenas de fundo são ilustrativas.</small>
+      </section>
+
+      <section class="slide thanks" data-chapter="Agradecimento" data-speaker="Vinicius" data-time="14:25" aria-labelledby="s15">
+        <div class="thanks-copy">
+          <p class="kicker">PUC-Campinas</p>
+          <h2 id="s15">Obrigado<span>.</span></h2>
+          <ul class="thanks-names">
+            <li>Miguel Fernandes Costacurta</li>
+            <li>Pedro Henrique Contardi Soler</li>
+            <li>Vinicius Panutti Salgado</li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="deck-top" aria-hidden="true"><span class="deck-mark"><b>UNIX</b><span>História do sistema</span></span><span id="chapter"></span></div>
+      <div class="deck-bottom" aria-hidden="true"><span>FUNDAMENTOS DE SISTEMAS OPERACIONAIS</span><span id="folio"></span></div>
+      <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+    </main>
+    </div>
+    <nav class="controls" aria-label="Controles da apresentação">
+      <div class="control-group">
+        <button type="button" id="index" aria-keyshortcuts="I">Índice <kbd aria-hidden="true">I</kbd></button>
+        <button type="button" id="notes-button" aria-keyshortcuts="N">Notas <kbd aria-hidden="true">N</kbd></button>
+      </div>
+      <button type="button" id="fullscreen" aria-keyshortcuts="F">Tela cheia</button>
+      <div class="control-group control-arrows">
+        <button type="button" id="previous" aria-label="Slide anterior">←</button>
+        <button type="button" id="next" aria-label="Próximo slide">→</button>
+      </div>
+    </nav>
+  <dialog id="slide-index" aria-labelledby="index-label"><div class="dialog-head"><h2 id="index-label">Índice</h2><form method="dialog"><button aria-label="Fechar índice">Fechar</button></form></div><ol id="index-list"></ol></dialog>
+  <dialog id="notes" aria-labelledby="notes-label">
+    <div class="dialog-head"><h2 id="notes-label">Notas de ensaio</h2><form method="dialog"><button aria-label="Fechar notas">Fechar</button></form></div>
+    <p id="notes-meta" class="notes-meta"></p>
+    <h3 id="notes-title"></h3>
+    <p id="notes-text"></p>
+    <button type="button" id="notes-timer">Iniciar cronômetro</button>
+    <span id="elapsed" aria-label="Tempo decorrido">00:00</span>
+    <button type="button" id="notes-reset">Zerar</button>
+  </dialog>
+  <p id="announcement" class="sr-only" aria-live="polite"></p>
+  </div>
+</body>
+</html>
